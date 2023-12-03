@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* NOTE: Default Background */
+    --background-darker: 240 4% 90%;
+    --background-dark: 240 4% 95%;
+    --background: 0 0% 100%;
+    --background-light: 0 0% 100%;
+    --background-lighter: 0 0% 100%;
+
+    /* NOTE: Default Accent */
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+
+    /* NOTE: Default Primary */
+    --primary-darker: 342 92% 41%;
+    --primary-dark: 342 92% 47%;
+    --primary: 342 92% 54%;
+    --primary-light: 342 92% 60%;
+    --primary-lighter: 342 92% 65%;
+    --primary-foreground: 356 100% 97%;
+    --primary-lightest: 342 92% 85%;
+
+    /* NOTE: Default Contrast */
+    --contrast-lower: 240 4% 85%;
+    --contrast-low: 240 4% 65%;
+    --contrast-medium: 225 4% 47%;
+    --contrast-high: 230 7% 23%;
+    --contrast-higher: 230 13% 9%;
+
+    /* NOTE: Default Warning */
+    --warning-darker: 35 79% 48%;
+    --warning-dark: 35 79% 56%;
+    --warning: 35 79% 66%;
+    --warning-light: 35 79% 74%;
+    --warning-lighter: 35 79% 82%;
+
+    /* NOTE: Default Success */
+    --success-darker: 170 78% 26%;
+    --success-dark: 170 78% 31%;
+    --success: 170 78% 36%;
+    --success-light: 170 78% 42%;
+    --success-lighter: 170 78% 47%;
+
+    /* NOTE: Default Error */
+    --error-darker: 342 92% 41%;
+    --error-dark: 342 92% 47%;
+    --error: 342 92% 54%;
+    --error-light: 342 92% 60%;
+    --error-lighter: 342 92% 65%;
+
+    /* NOTE: Default Secondary */
+    --secondary-darker: 250 84% 38%;
+    --secondary-dark: 250 84% 46%;
+    --secondary: 250 84% 54%;
+    --secondary-light: 250 84% 60%;
+    --secondary-lighter: 250 84% 67%;
+    --secondary-foreground: 250 100% 100%;
+    --secondary-lightest: 245 82% 67%;
+    --secondary-sub: 245 82% 67%;
+
+    --foreground: 240 10% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 347 77% 50%;
+    --radius: 0.5rem;
+    --white: 0 0% 100%;
+  }
+
+  .dark {
+    /* NOTE: Dark Background */
+    --background-darker: 232 7% 8%;
+    --background-dark: 233 8% 11%;
+    --background: 232 11% 15%;
+    --background-light: 233 8% 19%;
+    --background-lighter: 232 7% 22%;
+
+    /* NOTE: Dark Accent */
+    --accent: 12 7% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    /* NOTE: Dark Contrast */
+    --contrast-lower: 240 6% 26%;
+    --contrast-low: 240 3% 41%;
+    --contrast-medium: 231 3% 57%;
+    --contrast-high: 240 5% 82%;
+    --contrast-higher: 240 100% 99%;
+
+    --foreground: 0 0% 95%;
+    --card: 24 10% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 65%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 86% 97%;
+    --border: 232 7% 22%;
+    --input: 240 4% 16%;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@layer utilities {
+  .primary-text-gradient {
+    background: linear-gradient(129deg, rgb(225, 29, 72) 0%, rgb(238, 123, 148) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-primary-gradient {
+    background: hsla(342, 92%, 54%, 1);
+    background: linear-gradient(0deg, hsla(342, 92%, 54%, 1) 0%, hsla(342, 92%, 65%, 1) 100%);
+    background: -moz-linear-gradient(0deg, hsla(342, 92%, 54%, 1) 0%, hsla(342, 92%, 65%, 1) 100%);
+    background: -webkit-linear-gradient(0deg, hsla(342, 92%, 54%, 1) 0%, hsla(342, 92%, 65%, 1) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F61E5F", endColorstr="#F85485", GradientType=1 );
+  }
+
+  .bg-secondary-gradient {
+    background: hsla(250, 84%, 60%, 1);
+    background: linear-gradient(0deg, hsla(250, 84%, 60%, 1) 0%, hsla(250, 85%, 67%, 1) 100%);
+    background: -moz-linear-gradient(0deg, hsla(250, 84%, 60%, 1) 0%, hsla(250, 85%, 67%, 1) 100%);
+    background: -webkit-linear-gradient(0deg, hsla(250, 84%, 60%, 1) 0%, hsla(250, 85%, 67%, 1) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#6043EF", endColorstr="#7C64F2", GradientType=1 );
+  }
+}
