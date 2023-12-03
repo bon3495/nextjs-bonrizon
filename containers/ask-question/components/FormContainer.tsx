@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Editor } from '@tinymce/tinymce-react';
+import { useTheme } from 'next-themes';
 import { ControllerRenderProps, useForm } from 'react-hook-form';
 
 import { createQuestion } from '@/actions/question';
@@ -36,6 +37,7 @@ interface FormContainerProps {
 const FormContainer = ({ mongoUserId }: FormContainerProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { theme } = useTheme();
 
   const editorRef = useRef<Editor | null>(null);
 
@@ -136,6 +138,7 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                 </FormDescription>
                 <FormControl>
                   <Editor
+                    key={theme}
                     onEditorChange={field.onChange}
                     apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                     onInit={(_, editor) => {
@@ -144,7 +147,7 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                       editorRef.current = editor;
                     }}
                     onBlur={field.onBlur}
-                    initialValue=""
+                    // initialValue=""
                     init={{
                       height: 350,
                       menubar: false,
@@ -171,6 +174,8 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                         'alignright alignjustify | bullist numlist',
                       content_style:
                         'body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 16px }',
+                      skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
+                      content_css: theme === 'dark' ? 'dark' : 'default',
                     }}
                   />
                 </FormControl>

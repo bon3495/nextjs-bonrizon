@@ -12,7 +12,8 @@ const HomeNotFound = () => {
         alt="No result illustration"
         width={0}
         height={0}
-        className="h-auto w-[360px] object-cover"
+        sizes="100vw"
+        className="w-[360px] object-cover"
       />
 
       <div className="flex max-w-md flex-col items-center">
