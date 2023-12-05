@@ -13,7 +13,7 @@ import TagModel from '@/database/tag.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
 
-export async function getQuestions(params: GetQuestionsParamsType): Promise<QuestionsResponseType> {
+export async function getQuestions(params: Partial<GetQuestionsParamsType>): Promise<QuestionsResponseType> {
   try {
     connectToDatabase();
 

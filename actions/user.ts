@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { UserInfoType, UserServerType } from '@/containers/authentication/types';
+import { GetUsersListParamsType } from '@/containers/community/types';
 import QuestionModel from '@/database/question.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
@@ -80,6 +81,25 @@ export async function deleteUser(clerkId: string): Promise<void> {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - deleteUser', error);
+    throw error;
+  }
+}
+
+export async function getUsersList(params: Partial<GetUsersListParamsType>): Promise<UserInfoType[]> {
+  try {
+    connectToDatabase();
+
+    const { currentPage = 1, pageSize = 20 } = params;
+
+    const users: UserInfoType[] = await UserModel.find({})
+      .sort({ createAt: -1 })
+      .limit(pageSize)
+      .skip((currentPage - 1) * pageSize);
+
+    return users;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getUsersList', error);
     throw error;
   }
 }

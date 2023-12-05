@@ -1,4 +1,4 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
+import { fontFamily, screens } from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export const darkMode = ['class'];
@@ -16,6 +16,10 @@ export const theme = {
       '2xl': '1400px',
     },
   },
+  screens: {
+    ...screens,
+    xs: '480px',
+  },
   extend: {
     fontFamily: {
       inter: ['var(--font-inter)', ...fontFamily.sans],
@@ -27,7 +31,8 @@ export const theme = {
       'button-primary': '0px 10px 30px 0px hsla(342, 92%, 54%, 0.3);',
       'button-secondary': '0px 10px 30px 0px hsla(250, 84%, 54%, 0.3);',
       'search-global': '0 5px 12px rgba(0, 0, 0, 0.2), inset 0 0 0 0 rgba(255, 255, 255, 0.05)',
-      'card-light': '0 4px 24px 0 rgba(34, 41, 47, 0.1)',
+      'card-light': '0px 4px 18px 0px rgba(75, 70, 92, 0.10)',
+      'card-dark': '0px 4px 20px 0px rgba(15, 20, 34, 0.10)',
       'focus-active': '0px 0px 0px 4px hsla(250, 84%, 67%, 0.2)',
       'focus-success': '0px 0px 0px 4px hsla(170, 78%, 36%, 0.20)',
       'focus-error': '0px 0px 0px 4px hsla(342, 92%, 65%, 0.20)',

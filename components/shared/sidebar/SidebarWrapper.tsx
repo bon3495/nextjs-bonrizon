@@ -9,7 +9,7 @@ const SidebarWrapper = ({ children, className }: SidebarWrapperProps) => {
   return (
     <aside
       className={cn(
-        'sticky top-[80px] flex h-[calc(100vh-80px)] w-[105px] flex-col overflow-y-hidden transition-all duration-200 dark:shadow-none lg:w-[260px]',
+        'sticky top-[80px] flex h-[calc(100vh-80px)] w-[105px] flex-col overflow-y-hidden transition-all duration-200 dark:shadow-none lg:w-[240px]',
         className,
       )}
     >

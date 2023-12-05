@@ -12,10 +12,10 @@ export const CreateQuestionSchema = z.object({
 });
 
 export const GetQuestionsParamsSchema = z.object({
-  currentPage: z.string().trim().optional(),
-  pageSize: z.string().trim().optional(),
-  searchQuery: z.string().trim().optional(),
-  filters: z.string().trim().optional(),
+  currentPage: z.string().trim(),
+  pageSize: z.string().trim(),
+  searchQuery: z.string().trim(),
+  filters: z.string().trim(),
 });
 
 export const QuestionItemSchema = z.object({
