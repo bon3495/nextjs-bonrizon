@@ -13,9 +13,10 @@ interface FilterComboboxProps {
   filters: OptionProps[];
   hasSearch?: boolean;
   triggerClassName?: string;
+  contentClassName?: string;
 }
 
-function FilterCombobox({ filters, hasSearch, triggerClassName }: FilterComboboxProps) {
+function FilterCombobox({ filters, hasSearch, triggerClassName, contentClassName }: FilterComboboxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
@@ -31,12 +32,10 @@ function FilterCombobox({ filters, hasSearch, triggerClassName }: FilterCombobox
             triggerClassName,
           )}
         >
-          {/* {value ? filters.find((option) => option.value === value)?.label : 'Select a Filter'}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
           <Filter className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[160px] p-0" align="end">
+      <PopoverContent className={cn('w-[160px] p-0', contentClassName)} align="end">
         <Command>
           {hasSearch && <CommandInput placeholder="Search option..." />}
           <CommandEmpty>No option found.</CommandEmpty>

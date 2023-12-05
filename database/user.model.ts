@@ -16,6 +16,9 @@ export interface UserModelType extends Document {
   reputation?: number;
   saved: Schema.Types.ObjectId[];
   joined: Date;
+  answers?: number;
+  reached?: number;
+  questions?: number;
 }
 
 const UserDatabaseSchema = new Schema({
@@ -31,6 +34,9 @@ const UserDatabaseSchema = new Schema({
   gender: { type: String },
   portfolioWebsite: { type: String },
   reputation: { type: Number, default: 0 },
+  answers: { type: Number, default: 0 },
+  reached: { type: Number, default: 0 },
+  questions: { type: Number, default: 0 },
   saved: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
   joined: { type: Date, default: Date.now },
 });

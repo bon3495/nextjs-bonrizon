@@ -14,3 +14,8 @@ export const TagItemSchema = z.object({
 export const TagsListSchema = z.object({
   data: z.array(TagItemSchema),
 });
+
+export const TopInteractedTagsSchema = z.object({
+  userId: z.string().trim(),
+  limit: z.number().optional(),
+});
