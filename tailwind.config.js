@@ -41,6 +41,12 @@ export const theme = {
     height: {
       header: '80px',
     },
+    gridTemplateColumns: {
+      '2-cards': 'repeat(2, minmax(0, 360px))',
+      '1-card': 'repeat(1, minmax(0, 360px))',
+      '2-cards-min': 'repeat(2, minmax(0, 260px))',
+      '1-card-min': 'repeat(1, minmax(0, 320px))',
+    },
     colors: {
       border: 'hsl(var(--border))',
       input: 'hsl(var(--input))',
