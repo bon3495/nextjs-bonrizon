@@ -12,12 +12,12 @@ interface TagLinkProps extends RootLayoutProps {
   href: string | UrlObject;
 }
 
-const TagLink = ({ children, content, isShowTooltip, href }: TagLinkProps & typeof Link.defaultProps) => {
+const TagLink = ({ children, content, isShowTooltip, href, className }: TagLinkProps & typeof Link.defaultProps) => {
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={300} disableHoverableContent>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link href={href} className={cn(badgeVariants({ variant: 'tag-secondary', className: 'w-fit' }))}>
+          <Link href={href} className={cn(badgeVariants({ variant: 'tag-secondary', className: 'w-fit' }), className)}>
             <span className="inline-block">{children}</span>
           </Link>
         </TooltipTrigger>
