@@ -1,6 +1,8 @@
 'use server';
 
-import { TopInteractedTagsType } from '@/containers/tags/types';
+import { TagItemType, TagsParamsFiltersType, TopInteractedTagsType } from '@/containers/tags/types';
+import QuestionModel from '@/database/question.model';
+import TagModel from '@/database/tag.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
 
@@ -41,6 +43,25 @@ export async function getTopInteractedTags(params: TopInteractedTagsType) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getTopInteractedTags', error);
+    throw error;
+  }
+}
+
+export async function getTagsByFilters(params: Partial<TagsParamsFiltersType>) {
+  try {
+    connectToDatabase();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { currentPage, pageSize, searchQuery, filter } = params;
+
+    const tagsList = (await TagModel.find({}).populate({
+      path: 'questions',
+      model: QuestionModel,
+    })) as TagItemType[];
+
+    return tagsList;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getTagsByFilters', error);
     throw error;
   }
 }

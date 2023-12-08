@@ -37,4 +37,9 @@ export const staticMetadata = {
     description:
       "Join the Bonrizon community, a collaborative hub for programmers worldwide. Get involved in asking and answering programming questions, share your expertise, and collaborate with developers passionate about web development, mobile app development, algorithms, data structures, and more. Together, let's build a thriving knowledge-sharing community at Bonrizon.",
   } satisfies Metadata,
+  tags: {
+    title: 'Tags | Bonrizon',
+    description:
+      'Dive into a world of programming knowledge with Bonrizon tags. From signing in to asking questions, our community-driven platform covers web development, mobile app development, algorithms, data structures, and more. Join the collaborative hub, find answers, and contribute to the vibrant Bonrizon programming community.',
+  } satisfies Metadata,
 };
