@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { z } from 'zod';
 
+import { AnswerItemSchema } from '@/containers/answer/schema';
 import { UserInfoSchema } from '@/containers/authentication/schema';
 
 export const CreateQuestionSchema = z.object({
@@ -33,7 +34,7 @@ export const QuestionItemSchema = z.object({
   upvotes: z.array(UserInfoSchema).default([]),
   downvotes: z.array(UserInfoSchema).default([]),
   author: UserInfoSchema,
-  // answers: [],
+  answers: z.array(AnswerItemSchema).default([]),
   createAt: z.string().trim(),
 });
 

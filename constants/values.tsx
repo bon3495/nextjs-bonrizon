@@ -1,1 +1,1 @@
-export const MINIMUM_TEXT_EDITOR = 220;
+export const MINIMUM_TEXT_EDITOR = 100;

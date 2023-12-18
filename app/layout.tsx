@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { RootLayoutProps } from '@/types/global';
 
 import '@/styles/global.css';
+import '@/styles/prism.css';
 
 export const metadata: Metadata = {
   ...baseMetadata,

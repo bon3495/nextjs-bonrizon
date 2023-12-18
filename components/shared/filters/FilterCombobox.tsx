@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Check, Filter } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -14,11 +14,23 @@ interface FilterComboboxProps {
   hasSearch?: boolean;
   triggerClassName?: string;
   contentClassName?: string;
+  children?: React.ReactNode;
+  filterValue?: string;
+  setFilterValue?: Dispatch<SetStateAction<string>>;
 }
 
-function FilterCombobox({ filters, hasSearch, triggerClassName, contentClassName }: FilterComboboxProps) {
+function FilterCombobox({
+  filters,
+  hasSearch,
+  triggerClassName,
+  contentClassName,
+  filterValue,
+  setFilterValue,
+}: FilterComboboxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
+
+  const controlValue = filterValue || value;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -32,7 +44,17 @@ function FilterCombobox({ filters, hasSearch, triggerClassName, contentClassName
             triggerClassName,
           )}
         >
-          <Filter className="h-4 w-4" />
+          {/* {children || <Filter className="h-4 w-4" />} */}
+          {filterValue ? (
+            <>
+              <span className="inline-block max-xs:hidden">
+                {filters.find((item) => item.value === controlValue)?.label}
+              </span>
+              <Filter className="hidden h-4 w-4 max-xs:inline-block" />
+            </>
+          ) : (
+            <Filter className="h-4 w-4" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn('w-[160px] p-0', contentClassName)} align="end">
@@ -45,11 +67,16 @@ function FilterCombobox({ filters, hasSearch, triggerClassName, contentClassName
                 key={option.value}
                 value={option.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? '' : currentValue);
+                  const selectValue = currentValue === controlValue ? '' : currentValue;
+                  if (setFilterValue) {
+                    setFilterValue?.(selectValue);
+                  } else {
+                    setValue(selectValue);
+                  }
                   setOpen(false);
                 }}
               >
-                <Check className={cn('mr-2 h-4 w-4', value === option.value ? 'opacity-100' : 'opacity-0')} />
+                <Check className={cn('mr-2 h-4 w-4', controlValue === option.value ? 'opacity-100' : 'opacity-0')} />
                 {option.label}
               </CommandItem>
             ))}
