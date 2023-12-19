@@ -8,7 +8,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <Header />
       <div className="container relative flex flex-1">
         <LeftSidebar />
-        <main className="flex min-h-screen flex-1 flex-col px-6 pb-12 pt-[110px]">{children}</main>
+        <main className="flex min-h-screen w-full flex-1 flex-col px-6 pb-12 pt-[110px]">{children}</main>
         <RightSidebar />
       </div>
     </div>

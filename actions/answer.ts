@@ -2,13 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { AnswerItemType, AnswersListType } from '@/containers/answer/types';
+import { AnswerItemType, AnswersListType, CreateAnswerType } from '@/containers/answer/types';
 import AnswerModel from '@/database/answer.model';
 import QuestionModel from '@/database/question.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
 
-export async function createAnswer(params: Partial<AnswerItemType>) {
+export async function createAnswer(params: Partial<CreateAnswerType>) {
   try {
     connectToDatabase();
     const { answerDetail, author, question, path } = params;
@@ -37,21 +37,20 @@ export async function createAnswer(params: Partial<AnswerItemType>) {
   }
 }
 
-export async function getAnswers(params: Partial<AnswersListType>) {
+export async function getAnswers(params: Partial<AnswersListType>): Promise<{ answers: AnswerItemType[] }> {
   try {
     connectToDatabase();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { questionId, filter, currentPage, pageSize } = params;
+    const { questionId } = params;
 
     if (!questionId) throw new Error('Question not found!');
 
-    const answers = await AnswerModel.find({ question: questionId })
+    const answers = (await AnswerModel.find({ question: questionId })
       .populate({
         path: 'author',
         model: UserModel,
         select: '_id clerkId name picture',
       })
-      .sort({ createAt: -1 });
+      .sort({ createAt: -1 })) as AnswerItemType[];
 
     return { answers };
   } catch (error) {
