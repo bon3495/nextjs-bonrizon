@@ -5,12 +5,16 @@ import { useState } from 'react';
 import { FilterCombobox } from '@/components/shared/filters';
 import { ANSWER_FILTERS } from '@/constants/filters';
 
-const QuestionDetailsFilter = () => {
+interface AnswersByFilterProps {
+  totalAnswers: number;
+}
+
+const AnswersByFilter = ({ totalAnswers }: AnswersByFilterProps) => {
   const [filterValue, setFilterValue] = useState('highestupvotes');
 
   return (
     <section className="flex items-center justify-between">
-      <p className="text-sm font-medium">2 Answers</p>
+      <p className="text-lg font-semibold">{totalAnswers} Answers</p>
       <div className="flex items-center space-x-2 text-sm">
         <p>Sorted by</p>
         <FilterCombobox
@@ -25,4 +29,4 @@ const QuestionDetailsFilter = () => {
   );
 };
 
-export default QuestionDetailsFilter;
+export default AnswersByFilter;

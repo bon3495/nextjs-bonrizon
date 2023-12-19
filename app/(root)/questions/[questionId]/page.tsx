@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs';
 import { ClockIcon, Eye } from 'lucide-react';
@@ -8,14 +7,13 @@ import { getUserById } from '@/actions/user';
 import FormAnswer from '@/components/forms/FormAnswer';
 import ParseHTML from '@/components/shared/ParseHTML';
 import TagLink from '@/components/shared/TagLink';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import UserWithAvatarLink from '@/components/shared/UserWithAvatarLink';
 import { Separator } from '@/components/ui/separator';
 import { MONTH_DATE_YEAR_FULLTIME } from '@/constants/date-time-format';
 import { ROUTES_NAME } from '@/constants/routes';
+import { DisplayAllAnswers } from '@/containers/answer/components';
 import { TextWithTooltip } from '@/containers/home/components';
-import { QuestionDetailsFilter } from '@/containers/question/components';
 import { formatDateToLocal } from '@/lib/dayjs-timezone';
-import { getAvatarFallback } from '@/lib/helpers';
 import { getTimestamp } from '@/lib/utils';
 
 interface QuestionDetailsPageProps {
@@ -37,19 +35,11 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
       <h2 className="mb-3 text-3xl font-semibold">{questionDetails.title}</h2>
       <section className="flex items-center justify-between">
         <div className="flex items-center">
-          <Link href={`${ROUTES_NAME.PROFILE}/${questionDetails.author._id}`} className="flex items-center">
-            <Avatar className="mr-2 shadow-avatar">
-              <AvatarImage src={questionDetails.author.picture} />
-              <AvatarFallback>{getAvatarFallback(questionDetails.author.name)}</AvatarFallback>
-            </Avatar>
-          </Link>
-
-          <Link
-            href={`${ROUTES_NAME.PROFILE}/${questionDetails.author._id}`}
-            className="flex items-center transition-all hover:text-primary"
-          >
-            <p className="text-sm font-medium">{questionDetails.author.name}</p>
-          </Link>
+          <UserWithAvatarLink
+            userId={`${questionDetails.author._id}`}
+            userName={questionDetails.author.name}
+            userUrl={questionDetails.author.picture}
+          />
 
           <span className="mx-2 text-xs text-contrast-low">|</span>
 
@@ -84,9 +74,12 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
         ))}
       </section>
 
-      {/* <Separator className="my-6" /> */}
-      <QuestionDetailsFilter />
       <Separator className="my-6" />
+      <DisplayAllAnswers
+        questionId={`${questionDetails._id}`}
+        userId={`${user._id}`}
+        totalAnswers={questionDetails.answers.length}
+      />
 
       <FormAnswer userId={`${user._id}`} questionId={`${questionDetails._id}`} />
     </section>

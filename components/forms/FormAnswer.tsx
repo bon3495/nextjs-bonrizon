@@ -113,8 +113,8 @@ const FormAnswer = ({ userId, questionId }: FormAnswerProps) => {
                       'alignright alignjustify | bullist numlist',
                     content_style:
                       'body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 16px }',
-                    skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
-                    content_css: theme === 'dark' ? 'dark' : 'default',
+                    skin: theme === 'light' ? 'oxide' : 'oxide-dark',
+                    content_css: theme === 'light' ? 'default' : 'dark',
                   }}
                 />
               </FormControl>
