@@ -34,7 +34,7 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
             <AvatarFallback>{getAvatarFallback(question.author.name)}</AvatarFallback>
           </Avatar>
         </Link>
-        <small className="mr-1 text-sm text-muted-foreground">by</small>
+        {/* <small className="mr-1 text-sm text-muted-foreground">by</small> */}
 
         <Link
           href={`${ROUTES_NAME.PROFILE}/${question.author._id}`}

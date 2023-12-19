@@ -9,7 +9,6 @@ const CommunityContent = ({ users }: CommunityContentProps) => {
   return users.length > 0 ? (
     <CommunityList>
       {users.map((user) => (
-        // @ts-expect-error Server Component
         <CommunityCard key={user.clerkId} user={user} />
       ))}
     </CommunityList>

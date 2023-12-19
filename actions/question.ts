@@ -86,3 +86,27 @@ export async function createQuestion(params: CreateQuestionType) {
     revalidatePath(path);
   } catch (error) {}
 }
+
+export const getQuestionById = async (questionId: string) => {
+  try {
+    connectToDatabase();
+    const question = await QuestionModel.findById(questionId)
+      .populate({
+        path: 'tags',
+        model: TagModel,
+        select: '_id name',
+      })
+      .populate({
+        path: 'author',
+        model: UserModel,
+        select: '_id clerkId name username email picture',
+      });
+    if (!question) throw new Error('Question not found');
+
+    return question as QuestionItemType;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getQuestionById', error);
+    throw error;
+  }
+};

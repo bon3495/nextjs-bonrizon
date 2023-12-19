@@ -1,7 +1,7 @@
 import { OptionProps } from '@/types/global';
 
 export const ANSWER_FILTERS: OptionProps[] = [
-  { label: 'Highest Upvotes', value: 'highestupvotes' },
+  { label: 'Highest Upvotes (default)', value: 'highestupvotes' },
   { label: 'Lowest Upvotes', value: 'lowestupvotes' },
   { label: 'Most Recent', value: 'recent' },
   { label: 'Oldest', value: 'old' },
