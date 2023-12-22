@@ -1,4 +1,5 @@
 import BoltIcon from '@/components/icons/BoltIcon';
+import BookmarkIcon from '@/components/icons/BookmarkIcon';
 import ChatIcon from '@/components/icons/ChatIcon';
 import CheckedIcon from '@/components/icons/CheckedIcon';
 import CloseIcon from '@/components/icons/CloseIcon';
@@ -22,4 +23,5 @@ export const Icons = {
   UnderLineIcon,
   StarsIcon,
   BoltIcon,
+  BookmarkIcon,
 };

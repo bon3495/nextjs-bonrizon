@@ -1,13 +1,15 @@
 import { getAnswers } from '@/actions/answer';
-import { AnswersByFilter, DisplayAnswer } from '@/containers/answer/components';
+import { Separator } from '@/components/ui/separator';
+import { AnswersByFilter, AnswerVotes, DisplayAnswer } from '@/containers/answer/components';
+import { UserInfoType } from '@/containers/authentication/types';
 
 interface DisplayAllAnswersProps {
   questionId: string;
-  userId: string;
+  user: UserInfoType;
   totalAnswers: number;
 }
 
-const DisplayAllAnswers = async ({ questionId, totalAnswers }: DisplayAllAnswersProps) => {
+const DisplayAllAnswers = async ({ questionId, totalAnswers, user }: DisplayAllAnswersProps) => {
   const { answers } = await getAnswers({
     questionId,
   });
@@ -15,9 +17,14 @@ const DisplayAllAnswers = async ({ questionId, totalAnswers }: DisplayAllAnswers
   return (
     <div className="flex flex-col">
       <AnswersByFilter totalAnswers={totalAnswers} />
-      <div className="mt-12 flex flex-col">
+      <Separator className="mb-12 mt-4" />
+      <div className="flex flex-col">
         {answers.map((answer) => {
-          return <DisplayAnswer key={`${answer._id}`} answer={answer} />;
+          return (
+            <DisplayAnswer key={`${answer._id}`} answer={answer}>
+              <AnswerVotes />
+            </DisplayAnswer>
+          );
         })}
       </div>
     </div>

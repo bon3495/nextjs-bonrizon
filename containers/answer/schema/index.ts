@@ -11,7 +11,7 @@ export const CreateAnswerSchema = z.object({
 });
 
 export const AnswerItemSchema = z.object({
-  _id: z.custom<Types.ObjectId>(),
+  _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
   author: UserInfoSchema,
   answerDetail: z.string().trim(),
   question: z.string().trim(),
@@ -20,7 +20,24 @@ export const AnswerItemSchema = z.object({
   createAt: z.string().trim(),
 });
 
-export const AnswersListSchema = z.object({
+export const AnswerItemDetailsSchema = z.object({
+  _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+  author: z.object({
+    _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+    clerkId: z.string().trim(),
+    name: z.string().trim(),
+    picture: z.string().trim(),
+  }),
+  answerDetail: z.string().trim(),
+  question: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+  upvotes: z.array(z.custom<Types.ObjectId>()).transform((data) => data.map((user) => `${user._id}`)),
+  downvotes: z.array(z.custom<Types.ObjectId>()).transform((data) => data.map((user) => `${user._id}`)),
+  createAt: z.date().transform((data) => data.toISOString()),
+});
+
+export const AnswersListSchema = z.array(AnswerItemDetailsSchema);
+
+export const AnswersQueryParamsSchema = z.object({
   questionId: z.string().trim(),
   currentPage: z.number(),
   pageSize: z.number(),

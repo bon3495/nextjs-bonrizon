@@ -37,7 +37,7 @@ const ParseHTML = ({ content }: ParseHTMLProps) => {
     Prism.highlightAll();
   }, []);
 
-  return <section className="parsed-html text-sm">{parse(content)}</section>;
+  return <div className="parsed-html text-sm">{parse(content)}</div>;
 };
 
 export default ParseHTML;

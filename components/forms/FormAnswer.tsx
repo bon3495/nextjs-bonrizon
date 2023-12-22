@@ -63,8 +63,8 @@ const FormAnswer = ({ userId, questionId }: FormAnswerProps) => {
           name="answerDetail"
           render={({ field }) => (
             <FormItem>
-              <div className="mb-3 flex items-center justify-between">
-                <FormLabel className="mb-2 w-fit text-base">Your Answer</FormLabel>
+              <div className="mb-4 flex items-center justify-between">
+                <FormLabel className="w-fit text-base">Your Answer</FormLabel>
                 <Button
                   variant="outline"
                   size="sm"
