@@ -13,6 +13,7 @@ import { MONTH_DATE_YEAR_FULLTIME } from '@/constants/date-time-format';
 import { ROUTES_NAME } from '@/constants/routes';
 import { DisplayAllAnswers } from '@/containers/answer/components';
 import { TextWithTooltip } from '@/containers/home/components';
+import { BookmarkPost, QuestionVotes } from '@/containers/question/components';
 import { formatDateToLocal } from '@/lib/dayjs-timezone';
 import { getTimestamp } from '@/lib/utils';
 
@@ -52,8 +53,7 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
               </span>
             </p>
           </TextWithTooltip>
-        </div>
-        <div className="flex items-center space-x-4">
+          <span className="mx-2 text-xs text-contrast-low">|</span>
           <p className="flex items-center space-x-2 text-sm text-muted-foreground">
             <Eye className="h-4 w-4" />
             <span>
@@ -61,12 +61,20 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
             </span>
           </p>
         </div>
+        <div className="flex items-center space-x-4">
+          <div className="ml-auto flex items-center space-x-4">
+            <QuestionVotes user={user} questionDetails={questionDetails} />
+            <BookmarkPost userId={user._id} hasSaved={user.saved.includes(`${questionDetails._id}`)} />
+          </div>
+        </div>
       </section>
       <Separator className="my-4" />
 
-      <ParseHTML content={questionDetails.details} />
+      <section className="py-5 pl-10">
+        <ParseHTML content={questionDetails.details} />
+      </section>
 
-      <section className="my-10 flex items-center gap-x-2">
+      <section className="my-10 flex items-center gap-x-2 pl-10">
         {questionDetails.tags.map((tag) => (
           <TagLink href={`${ROUTES_NAME.TAGS}/${tag._id}`} key={`${tag._id}`} content={tag.description}>
             {tag.name}
@@ -74,10 +82,10 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
         ))}
       </section>
 
-      <Separator className="my-6" />
+      {/* <Separator className="my-6" /> */}
       <DisplayAllAnswers
         questionId={`${questionDetails._id}`}
-        userId={`${user._id}`}
+        user={user}
         totalAnswers={questionDetails.answers.length}
       />
 

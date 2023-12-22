@@ -2,7 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { AnswerItemType, AnswersListType, CreateAnswerType } from '@/containers/answer/types';
+import { AnswersListSchema } from '@/containers/answer/schema';
+import { AnswersQueryParamsType, CreateAnswerType } from '@/containers/answer/types';
 import AnswerModel from '@/database/answer.model';
 import QuestionModel from '@/database/question.model';
 import UserModel from '@/database/user.model';
@@ -37,22 +38,24 @@ export async function createAnswer(params: Partial<CreateAnswerType>) {
   }
 }
 
-export async function getAnswers(params: Partial<AnswersListType>): Promise<{ answers: AnswerItemType[] }> {
+export async function getAnswers(params: Partial<AnswersQueryParamsType>) {
   try {
     connectToDatabase();
     const { questionId } = params;
 
     if (!questionId) throw new Error('Question not found!');
 
-    const answers = (await AnswerModel.find({ question: questionId })
+    const answers = await AnswerModel.find({ question: questionId })
       .populate({
         path: 'author',
         model: UserModel,
         select: '_id clerkId name picture',
       })
-      .sort({ createAt: -1 })) as AnswerItemType[];
+      .sort({ createAt: -1 });
 
-    return { answers };
+    const response = AnswersListSchema.parse(answers);
+
+    return { answers: response };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getAnswers', error);

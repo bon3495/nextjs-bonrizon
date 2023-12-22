@@ -41,3 +41,56 @@ export const QuestionItemSchema = z.object({
 export const QuestionsResponseSchema = z.object({
   data: z.array(QuestionItemSchema),
 });
+
+export const QuestionDetailsSchema = z.object({
+  _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+  title: z.string().trim().catch(''),
+  details: z.string().trim().catch(''),
+  tags: z.array(
+    z.object({
+      _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+      name: z.string().trim(),
+      description: z.string().trim().catch(''),
+    }),
+  ),
+  views: z.number(),
+  upvotes: z
+    .array(
+      z.object({
+        _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+        clerkId: z.string().trim(),
+        name: z.string().trim(),
+        picture: z.string().trim(),
+      }),
+    )
+    .default([]),
+  downvotes: z
+    .array(
+      z.object({
+        _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+        clerkId: z.string().trim(),
+        name: z.string().trim(),
+        picture: z.string().trim(),
+      }),
+    )
+    .default([]),
+  author: z.object({
+    _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+    clerkId: z.string().trim(),
+    name: z.string().trim(),
+    picture: z.string().trim(),
+  }),
+  answers: z
+    .array(z.custom<Types.ObjectId>())
+    .default([])
+    .transform((ids) => ids.map((id) => `${id}`)),
+  createAt: z.date().transform((date) => date.toISOString()),
+});
+
+export const QuestionVoteParamsSchema = z.object({
+  questionId: z.string().trim(),
+  userId: z.string().trim(),
+  hasUpvoted: z.boolean(),
+  hasDownvoted: z.boolean(),
+  path: z.string().trim()
+});

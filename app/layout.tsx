@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 
+import Providers from '@/app/providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import { baseMetadata } from '@/config/meta';
 import { fontInter, fontSignikaNegative } from '@/lib/fonts';
@@ -16,15 +17,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn(fontInter.variable, fontSignikaNegative.variable)}>
       <head />
-      <body
-        className={cn(
-          'min-h-screen bg-background font-inter text-foreground antialiased',
-          fontInter.variable,
-          fontSignikaNegative.variable,
-        )}
-      >
+      <body className={cn('min-h-screen bg-background font-inter text-foreground antialiased')}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ClerkProvider
             appearance={{
@@ -34,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               },
             }}
           >
-            {children}
+            <Providers>{children}</Providers>
           </ClerkProvider>
         </ThemeProvider>
       </body>

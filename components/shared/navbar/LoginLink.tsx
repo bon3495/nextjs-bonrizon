@@ -15,7 +15,7 @@ const LoginLink = ({ href = ROUTES_NAME.HOME, className, isMobile, ...props }: L
     <Link href={href} className={cn('relative flex w-fit origin-left items-center gap-2', className)} {...props}>
       <Image src="/assets/images/logo.png" alt="Logo Bonrizon" width={32} height={32} />
       <p
-        className={cn('flex items-center font-spaceGrotesk text-3xl font-bold tracking-tighter', {
+        className={cn('font-signikaNegative flex items-center text-3xl font-bold tracking-tighter', {
           'max-sm:hidden': !isMobile,
         })}
       >
