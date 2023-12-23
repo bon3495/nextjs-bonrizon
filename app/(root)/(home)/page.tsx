@@ -15,7 +15,7 @@ const Home = async () => {
   return (
     <>
       <HomeHeader />
-      <HomeContent questions={questionsList.data} />
+      <HomeContent questions={questionsList} />
     </>
   );
 };

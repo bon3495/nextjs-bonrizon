@@ -3,7 +3,7 @@ export const ROUTES_NAME = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   COMMUNITY: '/community',
-  COLLECTIONS: '/Collections',
+  COLLECTIONS: '/collections',
   JOBS: '/jobs',
   TAGS: '/tags',
   PROFILE: '/profile',

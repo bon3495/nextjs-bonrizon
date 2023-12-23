@@ -28,7 +28,7 @@ function FilterCombobox({
   setFilterValue,
 }: FilterComboboxProps) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(filters.at(0)?.value);
 
   const controlValue = filterValue || value;
 
