@@ -13,7 +13,7 @@ import { MONTH_DATE_YEAR_FULLTIME } from '@/constants/date-time-format';
 import { ROUTES_NAME } from '@/constants/routes';
 import { DisplayAllAnswers } from '@/containers/answer/components';
 import { TextWithTooltip } from '@/containers/home/components';
-import { BookmarkPost, QuestionVotes } from '@/containers/question/components';
+import { BookmarkQuestion, QuestionVotes } from '@/containers/question/components';
 import { formatDateToLocal } from '@/lib/dayjs-timezone';
 import { getTimestamp } from '@/lib/utils';
 
@@ -64,7 +64,7 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
         <div className="flex items-center space-x-4">
           <div className="ml-auto flex items-center space-x-4">
             <QuestionVotes user={user} questionDetails={questionDetails} />
-            <BookmarkPost userId={user._id} hasSaved={user.saved.includes(`${questionDetails._id}`)} />
+            <BookmarkQuestion user={user} questionDetails={questionDetails} />
           </div>
         </div>
       </section>
