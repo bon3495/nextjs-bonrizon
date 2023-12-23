@@ -42,4 +42,9 @@ export const staticMetadata = {
     description:
       'Dive into a world of programming knowledge with Bonrizon tags. From signing in to asking questions, our community-driven platform covers web development, mobile app development, algorithms, data structures, and more. Join the collaborative hub, find answers, and contribute to the vibrant Bonrizon programming community.',
   } satisfies Metadata,
+  savesQuestions: {
+    title: 'Saved Questions | Bonrizon',
+    description:
+      'Access your saved programming questions on Bonrizon. Easily retrieve and review questions that you have marked for future reference. Join a global community of developers on this community-driven platform and organize your learning journey by saving questions related to web development, mobile app development, algorithms, data structures, and more.',
+  } satisfies Metadata,
 };

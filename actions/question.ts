@@ -3,13 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { UpdateQuery } from 'mongoose';
 
-import { QuestionDetailsSchema } from '@/containers/home/schema';
+import { QuestionDetailsSchema, QuestionsResponseSchema } from '@/containers/home/schema';
 import {
   CreateQuestionType,
   GetQuestionsParamsType,
   QuestionDetailsType,
-  QuestionItemType,
-  QuestionsResponseType,
   QuestionVoteParamsType,
 } from '@/containers/home/types';
 import QuestionModel from '@/database/question.model';
@@ -17,25 +15,31 @@ import TagModel from '@/database/tag.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
 
-export async function getQuestions(params: Partial<GetQuestionsParamsType>): Promise<QuestionsResponseType> {
+export async function getQuestions(params: Partial<GetQuestionsParamsType>) {
   try {
     connectToDatabase();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { currentPage, pageSize, searchQuery, filters } = params;
 
-    const questions = (await QuestionModel.find({})
+    const questions = await QuestionModel.find({})
       .populate({
         path: 'tags',
         model: TagModel,
+        select: '_id name description',
       })
       .populate({
         path: 'author',
         model: UserModel,
+        select: '_id clerkId name picture',
       })
-      .sort({ createAt: -1 })) as QuestionItemType[];
+      .sort({ createAt: -1 });
 
-    return { data: questions };
+    if (!questions) {
+      throw new Error('Questions not found');
+    }
+
+    return QuestionsResponseSchema.parse(questions);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
