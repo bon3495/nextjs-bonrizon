@@ -6,14 +6,12 @@ import { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger
 import { cn } from '@/lib/utils';
 
 interface BookmarkPostProps {
-  userId: string;
-  hasSaved?: boolean;
+  hasSaved: boolean;
+  bookmarkContent: string;
+  isPending?: boolean;
+  onSave: () => void;
 }
-const BookmarkPost = ({ userId, hasSaved }: BookmarkPostProps) => {
-  const handleBookMark = () => {
-    console.log(userId);
-  };
-
+const BookmarkPost = ({ hasSaved, bookmarkContent, isPending, onSave }: BookmarkPostProps) => {
   return (
     <TooltipProvider delayDuration={300}>
       <Tooltip>
@@ -21,18 +19,19 @@ const BookmarkPost = ({ userId, hasSaved }: BookmarkPostProps) => {
           <Button
             size="icon"
             className="rounded-full hover:bg-background-darker hover:text-primary dark:hover:bg-background-lighter"
-            onClick={handleBookMark}
+            onClick={onSave}
+            disabled={isPending}
           >
             <BookmarkIcon
               className={cn({
-                'fill-primary text-primary': hasSaved,
+                'fill-warning text-warning-darker': hasSaved,
               })}
             />
           </Button>
         </TooltipTrigger>
         <TooltipPortal>
           <TooltipContent side="top" align="center" className="max-w-[300px]">
-            <span>Save this question.</span>
+            <span>{bookmarkContent}</span>
           </TooltipContent>
         </TooltipPortal>
       </Tooltip>

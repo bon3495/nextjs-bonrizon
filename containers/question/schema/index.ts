@@ -10,3 +10,9 @@ export const FormAnswerSchema = z.object({
       message: `Answer must be greater than or equal to ${MINIMUM_TEXT_EDITOR} characters`,
     }),
 });
+
+export const ToggleSaveQuestionSchema = z.object({
+  userId: z.string().trim(),
+  questionId: z.string().trim(),
+  path: z.string().trim(),
+});

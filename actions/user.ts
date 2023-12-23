@@ -1,9 +1,12 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { UpdateQuery } from 'mongoose';
 
+import { UserFromDbSchema } from '@/containers/authentication/schema';
 import { UserInfoType, UserServerType } from '@/containers/authentication/types';
 import { GetUsersListParamsType } from '@/containers/community/types';
+import { ToggleSaveQuestionType } from '@/containers/question/types';
 import QuestionModel from '@/database/question.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
@@ -100,6 +103,39 @@ export async function getUsersList(params: Partial<GetUsersListParamsType>): Pro
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getUsersList', error);
+    throw error;
+  }
+}
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionType) {
+  try {
+    connectToDatabase();
+
+    const { userId, questionId, path } = params;
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    const userParsed = UserFromDbSchema.parse(user);
+
+    const isQuestionSaved = userParsed.saved.includes(questionId);
+
+    const updateQuery: UpdateQuery<UserInfoType> = {};
+
+    if (isQuestionSaved) {
+      updateQuery.$pull = { saved: questionId };
+    } else {
+      updateQuery.$push = { saved: questionId };
+    }
+
+    await UserModel.findByIdAndUpdate(userId, updateQuery, { new: true });
+
+    revalidatePath(path);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - toggleSaveQuestion', error);
     throw error;
   }
 }
