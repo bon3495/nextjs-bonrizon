@@ -1,10 +1,12 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { viewQuestions } from '@/actions/interaction';
 import { downvotesQuestion, upvotesQuestion } from '@/actions/question';
 import Votes from '@/components/shared/Votes';
+import { QUERY_KEYS } from '@/constants/query-keys';
 import { UserInfoType } from '@/containers/authentication/types';
 import { QuestionDetailsType } from '@/containers/home/types';
 
@@ -35,6 +37,15 @@ const QuestionVotes = ({ user, questionDetails }: QuestionVotesProps) => {
     if (type === 'upvotes') mutationUpvotes.mutate(body);
     if (type === 'downvotes') mutationDownvotes.mutate(body);
   };
+
+  useQuery({
+    queryKey: [QUERY_KEYS.INTERACTION],
+    queryFn: () =>
+      viewQuestions({
+        questionId: questionDetails._id,
+        userId: user._id,
+      }),
+  });
 
   return (
     <Votes
