@@ -42,6 +42,11 @@ export const staticMetadata = {
     description:
       'Dive into a world of programming knowledge with Bonrizon tags. From signing in to asking questions, our community-driven platform covers web development, mobile app development, algorithms, data structures, and more. Join the collaborative hub, find answers, and contribute to the vibrant Bonrizon programming community.',
   } satisfies Metadata,
+  tag: {
+    title: 'Tag | Bonrizon',
+    description:
+      'Dive into a world of programming knowledge with Bonrizon tags. From signing in to asking questions, our community-driven platform covers web development, mobile app development, algorithms, data structures, and more. Join the collaborative hub, find answers, and contribute to the vibrant Bonrizon programming community.',
+  } satisfies Metadata,
   savesQuestions: {
     title: 'Saved Questions | Bonrizon',
     description:

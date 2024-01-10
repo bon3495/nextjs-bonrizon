@@ -1,8 +1,9 @@
 import type { Types } from 'mongoose';
 import { z } from 'zod';
 
+import { QUERY_DEFAULT } from '@/constants/values';
 import { UserInfoSchema } from '@/containers/authentication/schema';
-import { QuestionItemSchema } from '@/containers/home/schema';
+import { QuestionItemSchema, QuestionsResponseSchema } from '@/containers/home/schema';
 
 export const TagItemSchema = z.object({
   _id: z.custom<Types.ObjectId>(),
@@ -27,4 +28,17 @@ export const TagsParamsFiltersSchema = z.object({
   pageSize: z.number(),
   searchQuery: z.string().trim(),
   filter: z.string().trim(),
+});
+
+export const GetQuestionsByTagIdParamsSchema = z.object({
+  id: z.string(),
+  currentPage: z.number().default(QUERY_DEFAULT.CURRENT_PAGE).optional(),
+  pageSize: z.number().default(QUERY_DEFAULT.PAGE_SIZE).optional(),
+  searchQuery: z.string().trim().optional(),
+});
+
+export const GetTagFromDbSchema = z.object({
+  _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+  name: z.string().trim(),
+  questions: QuestionsResponseSchema,
 });

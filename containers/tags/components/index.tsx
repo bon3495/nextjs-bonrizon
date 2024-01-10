@@ -4,3 +4,6 @@ export { default as TagsFilter } from '@/containers/tags/components/TagsFilter';
 export { default as TagsContent } from '@/containers/tags/components/TagsContent';
 export { default as TagsList } from '@/containers/tags/components/TagsList';
 export { default as TagCard } from '@/containers/tags/components/TagCard';
+export { default as TagDetailsHeader } from '@/containers/tags/components/TagDetailsHeader';
+export { default as TagDetailsSearchBar } from '@/containers/tags/components/TagDetailsSearchBar';
+export { default as TagDetailsFilters } from '@/containers/tags/components/TagDetailsFilters';
