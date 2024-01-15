@@ -6,7 +6,8 @@ import { UpdateQuery } from 'mongoose';
 import { UserFromDbSchema } from '@/containers/authentication/schema';
 import { UserInfoType, UserServerType } from '@/containers/authentication/types';
 import { GetUsersListParamsType } from '@/containers/community/types';
-import { ToggleSaveQuestionType } from '@/containers/question/types';
+import { GetUserInfoType, ToggleSaveQuestionType } from '@/containers/question/types';
+import AnswerModel from '@/database/answer.model';
 import QuestionModel from '@/database/question.model';
 import UserModel from '@/database/user.model';
 import { connectToDatabase } from '@/lib/mongoose';
@@ -136,6 +137,30 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionType) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - toggleSaveQuestion', error);
+    throw error;
+  }
+}
+
+export async function getUserInfo({ userId }: GetUserInfoType) {
+  try {
+    connectToDatabase();
+
+    const user = await UserModel.findOne({ clerkId: userId });
+    if (!user) throw new Error('User not found!');
+
+    const userParsed = UserFromDbSchema.parse(user);
+
+    const totalQuestions = await QuestionModel.countDocuments({ author: userParsed._id });
+    const totalAnswers = await AnswerModel.countDocuments({ author: userParsed._id });
+
+    return {
+      user: userParsed,
+      totalAnswers,
+      totalQuestions,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getUserInfo', error);
     throw error;
   }
 }

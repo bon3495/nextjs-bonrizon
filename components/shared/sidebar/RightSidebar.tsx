@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { SidebarWrapper } from '@/components/shared/sidebar';
 import TagLink from '@/components/shared/TagLink';
@@ -94,8 +97,19 @@ const POPULAR_TAGS = [
   },
 ];
 
+const ACCEPTED_SIDEBAR = [
+  ROUTES_NAME.HOME,
+  ROUTES_NAME.COMMUNITY,
+  ROUTES_NAME.COLLECTIONS,
+  ROUTES_NAME.TAGS,
+] as string[];
+
 const RightSidebar = () => {
-  return (
+  const pathname = usePathname();
+
+  const isShow = ACCEPTED_SIDEBAR.includes(pathname);
+
+  return isShow ? (
     <SidebarWrapper className="right-0 border-l dark:border-background-lighter  max-xl:hidden">
       <ScrollArea className="flex flex-1 flex-col">
         <section className="flex flex-col px-6">
@@ -118,12 +132,6 @@ const RightSidebar = () => {
           <ul className="inline-flex flex-wrap gap-2">
             {POPULAR_TAGS.map((item) => (
               <li key={item._id} className="flex">
-                {/* <Link
-                  href={`${ROUTES_NAME.TAGS}/${item._id}`}
-                  className="text-sm transition-all hover:text-contrast-medium hover:underline dark:hover:text-primary-light"
-                >
-                  <Badge variant="tag">{item.name}</Badge>
-                </Link> */}
                 <TagLink href={`${ROUTES_NAME.TAGS}/${item._id}`} content={item.content} isShowTooltip={!!item.content}>
                   {item.name}
                 </TagLink>
@@ -133,7 +141,7 @@ const RightSidebar = () => {
         </section>
       </ScrollArea>
     </SidebarWrapper>
-  );
+  ) : null;
 };
 
 export default RightSidebar;
