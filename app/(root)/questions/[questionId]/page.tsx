@@ -37,7 +37,7 @@ const QuestionDetailsPage = async ({ params }: QuestionDetailsPageProps) => {
       <section className="flex items-center justify-between">
         <div className="flex items-center">
           <UserWithAvatarLink
-            userId={`${questionDetails.author._id}`}
+            userId={`${questionDetails.author.clerkId}`}
             userName={questionDetails.author.name}
             userUrl={questionDetails.author.picture}
           />

@@ -28,7 +28,7 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
       </Link>
 
       <div className="flex items-center">
-        <Link href={`${ROUTES_NAME.PROFILE}/${question.author._id}`} className="flex items-center">
+        <Link href={`${ROUTES_NAME.PROFILE}/${question.author.clerkId}`} className="flex items-center">
           <Avatar className="mr-2 shadow-avatar">
             <AvatarImage src={question.author.picture} />
             <AvatarFallback>{getAvatarFallback(question.author.name)}</AvatarFallback>
@@ -36,7 +36,7 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
         </Link>
 
         <Link
-          href={`${ROUTES_NAME.PROFILE}/${question.author._id}`}
+          href={`${ROUTES_NAME.PROFILE}/${question.author.clerkId}`}
           className="flex items-center transition-all hover:text-primary"
         >
           <small className="text-sm">{question.author.name}</small>

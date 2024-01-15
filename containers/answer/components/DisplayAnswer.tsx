@@ -20,7 +20,7 @@ const DisplayAnswer = ({ answer, children }: DisplayAnswerProps) => {
       <div className="flex justify-between">
         <div className="flex items-center">
           <UserWithAvatarLink
-            userId={`${answer.author._id}`}
+            userId={`${answer.author.clerkId}`}
             userName={answer.author.name}
             userUrl={answer.author.picture}
           />

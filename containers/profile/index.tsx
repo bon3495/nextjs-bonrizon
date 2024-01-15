@@ -1,0 +1,10 @@
+export { default as ProfileHeader } from '@/containers/profile/components/ProfileHeader';
+export { default as ProfileStats } from '@/containers/profile/components/ProfileStats';
+export { default as ProfileAbout } from '@/containers/profile/components/ProfileAbout';
+export { default as ProfileTopTags } from '@/containers/profile/components/ProfileTopTags';
+export { default as ProfileBlockWrap } from '@/containers/profile/components/ProfileBlockWrap';
+export { default as ProfileTabsAnswersQuestions } from '@/containers/profile/components/ProfileTabsAnswersQuestions';
+export { default as ProfileBadges } from '@/containers/profile/components/ProfileBadges';
+export { default as ProfileAllPosts } from '@/containers/profile/components/ProfileAllPosts';
+export { default as ProfileQuestions } from '@/containers/profile/components/ProfileQuestions';
+export { default as ProfileAnswers } from '@/containers/profile/components/ProfileAnswers';

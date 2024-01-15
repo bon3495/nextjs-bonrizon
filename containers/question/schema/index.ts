@@ -16,3 +16,7 @@ export const ToggleSaveQuestionSchema = z.object({
   questionId: z.string().trim(),
   path: z.string().trim(),
 });
+
+export const GetUserInfoSchema = z.object({
+  userId: z.string(),
+});
