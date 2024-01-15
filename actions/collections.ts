@@ -1,3 +1,5 @@
+'use server';
+
 import { FilterQuery } from 'mongoose';
 
 import { CollectionsFromDbSchema } from '@/containers/collections/schema';

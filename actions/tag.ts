@@ -1,6 +1,15 @@
 'use server';
 
-import { TagItemType, TagsParamsFiltersType, TopInteractedTagsType } from '@/containers/tags/types';
+import { FilterQuery } from 'mongoose';
+
+import { GetTagFromDbSchema } from '@/containers/tags/schema';
+import {
+  GetQuestionsByTagIdParamsType,
+  TagItemType,
+  TagsListType,
+  TagsParamsFiltersType,
+  TopInteractedTagsType,
+} from '@/containers/tags/types';
 import QuestionModel from '@/database/question.model';
 import TagModel from '@/database/tag.model';
 import UserModel from '@/database/user.model';
@@ -62,6 +71,50 @@ export async function getTagsByFilters(params: Partial<TagsParamsFiltersType>) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getTagsByFilters', error);
+    throw error;
+  }
+}
+
+export async function getQuestionsByTagId(params: GetQuestionsByTagIdParamsType) {
+  try {
+    connectToDatabase();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, currentPage, pageSize, searchQuery } = params;
+
+    const tagFilter: FilterQuery<TagsListType> = { _id: id };
+
+    const tag = await TagModel.findOne(tagFilter).populate({
+      path: 'questions',
+      model: QuestionModel,
+      match: searchQuery ? { title: { $regex: searchQuery, $options: 'i' } } : {},
+      options: {
+        sort: { createdAt: -1 },
+      },
+      populate: [
+        {
+          path: 'tags',
+          model: TagModel,
+          select: '_id name',
+        },
+        {
+          path: 'author',
+          model: UserModel,
+          select: '_id clerkId name picture',
+        },
+      ],
+    });
+
+    if (!tag) {
+      throw new Error('Tag not found');
+    }
+
+    const tagParsed = GetTagFromDbSchema.parse(tag);
+    const { questions } = tagParsed;
+
+    return { title: tagParsed.name, questions };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getQuestionsByTagId', error);
     throw error;
   }
 }
