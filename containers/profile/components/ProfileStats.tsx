@@ -14,7 +14,6 @@ interface ComponentProps {
 }
 
 const ProfileStats = ({ className, totalAnswers, totalQuestions, user }: ComponentProps) => {
-  console.log(user);
   return (
     <ProfileBlockWrap className={className} title="Stats">
       <div className="grid grid-cols-1 gap-4">

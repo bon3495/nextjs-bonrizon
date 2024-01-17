@@ -16,7 +16,7 @@ interface DisplayAnswerProps {
 
 const DisplayAnswer = ({ answer, children }: DisplayAnswerProps) => {
   return (
-    <article key={`${answer._id}`}>
+    <article key={`${answer._id}`} id={answer._id} data-answerid={answer._id} className="scroll-m-32">
       <div className="flex justify-between">
         <div className="flex items-center">
           <UserWithAvatarLink

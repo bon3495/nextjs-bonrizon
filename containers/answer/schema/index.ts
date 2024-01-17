@@ -43,3 +43,25 @@ export const AnswersQueryParamsSchema = z.object({
   pageSize: z.number(),
   filter: z.string().trim(),
 });
+
+export const AnswerItemInProfileSchema = AnswerItemDetailsSchema.extend({
+  question: z.object({
+    _id: z.custom<Types.ObjectId>().transform((id) => id.toString()),
+    title: z.string().trim(),
+  }),
+});
+
+export const AnswersGroupSchema = z.array(AnswerItemInProfileSchema);
+
+export const DeleteAnswerParamsSchema = z.object({
+  answerId: z.string(),
+  path: z.string(),
+});
+
+export const AnswerVoteParamsSchema = z.object({
+  answerId: z.string(),
+  userId: z.string(),
+  hasUpvoted: z.boolean(),
+  hasDownvoted: z.boolean(),
+  path: z.string(),
+});
