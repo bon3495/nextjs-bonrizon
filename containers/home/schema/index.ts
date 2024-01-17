@@ -76,3 +76,8 @@ export const QuestionVoteParamsSchema = z.object({
   hasDownvoted: z.boolean(),
   path: z.string().trim(),
 });
+
+export const DeleteQuestionParamsSchema = z.object({
+  path: z.string(),
+  questionId: z.string(),
+});

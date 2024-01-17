@@ -2,14 +2,17 @@
 
 import { revalidatePath } from 'next/cache';
 import { UpdateQuery } from 'mongoose';
+import { z } from 'zod';
 
-import { QuestionDetailsSchema, QuestionsResponseSchema } from '@/containers/home/schema';
+import { DeleteQuestionParamsSchema, QuestionDetailsSchema, QuestionsResponseSchema } from '@/containers/home/schema';
 import {
   CreateQuestionType,
   GetQuestionsParamsType,
   QuestionDetailsType,
   QuestionVoteParamsType,
 } from '@/containers/home/types';
+import AnswerModel from '@/database/answer.model';
+import InteractionModel from '@/database/interaction.model';
 import QuestionModel from '@/database/question.model';
 import TagModel from '@/database/tag.model';
 import UserModel from '@/database/user.model';
@@ -196,6 +199,34 @@ export async function downvotesQuestion(params: QuestionVoteParamsType) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - upvotesQuestion', error);
+    throw error;
+  }
+}
+
+export async function deleteQuestion(params: z.infer<typeof DeleteQuestionParamsSchema>) {
+  try {
+    connectToDatabase();
+
+    const { questionId, path } = params;
+
+    await Promise.all([
+      QuestionModel.deleteOne({ _id: questionId }),
+      AnswerModel.deleteMany({ question: questionId }),
+      InteractionModel.deleteMany({ question: questionId }),
+      TagModel.updateMany(
+        {
+          questions: questionId,
+        },
+        {
+          $pull: { questions: questionId },
+        },
+      ),
+    ]);
+
+    revalidatePath(path);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - deleteQuestion', error);
     throw error;
   }
 }

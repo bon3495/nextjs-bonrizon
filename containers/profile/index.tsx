@@ -8,3 +8,5 @@ export { default as ProfileBadges } from '@/containers/profile/components/Profil
 export { default as ProfileAllPosts } from '@/containers/profile/components/ProfileAllPosts';
 export { default as ProfileQuestions } from '@/containers/profile/components/ProfileQuestions';
 export { default as ProfileAnswers } from '@/containers/profile/components/ProfileAnswers';
+export { default as ProfileRemoveItem } from '@/containers/profile/components/ProfileRemoveItem';
+export { default as ProfileRemoveQuestion } from '@/containers/profile/components/ProfileRemoveQuestion';

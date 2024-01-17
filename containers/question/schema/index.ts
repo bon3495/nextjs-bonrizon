@@ -20,3 +20,9 @@ export const ToggleSaveQuestionSchema = z.object({
 export const GetUserInfoSchema = z.object({
   userId: z.string(),
 });
+
+export const ParamsListInProfileSchema = z.object({
+  userId: z.string(),
+  currentPage: z.number(),
+  pageSize: z.number(),
+});

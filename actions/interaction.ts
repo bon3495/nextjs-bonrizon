@@ -23,7 +23,10 @@ export async function viewQuestions(params: ViewQuestionParamsProps) {
       });
 
       // eslint-disable-next-line no-console
-      if (existingInteraction) return console.log('User has already viewed.');
+      if (existingInteraction) {
+        console.log('User has already viewed.');
+        return null;
+      }
 
       // Create interaction
       await InteractionModel.create({
@@ -32,6 +35,8 @@ export async function viewQuestions(params: ViewQuestionParamsProps) {
         action: 'view',
       });
     }
+
+    return null;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - viewQuestions', error);

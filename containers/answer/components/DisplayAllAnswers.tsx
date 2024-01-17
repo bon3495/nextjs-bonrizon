@@ -22,7 +22,7 @@ const DisplayAllAnswers = async ({ questionId, totalAnswers, user }: DisplayAllA
         {answers.map((answer) => {
           return (
             <DisplayAnswer key={`${answer._id}`} answer={answer}>
-              <AnswerVotes />
+              <AnswerVotes userId={user._id} answer={answer} />
             </DisplayAnswer>
           );
         })}

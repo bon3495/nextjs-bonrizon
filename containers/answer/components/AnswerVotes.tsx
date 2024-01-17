@@ -1,26 +1,55 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { z } from 'zod';
+
+import { downvotesAnswer, upvotesAnswer } from '@/actions/answer';
 import Votes from '@/components/shared/Votes';
+import { AnswerItemDetailsSchema } from '@/containers/answer/schema';
 
-const AnswerVotes = () => {
-  const handleUpvotesAnswer = () => {
-    console.log('up');
-  };
+interface ComponentProps {
+  userId: string;
+  answer: z.infer<typeof AnswerItemDetailsSchema>;
+}
 
-  const handleDownvotesAnswer = () => {
-    console.log('up');
+const AnswerVotes = ({ answer, userId }: ComponentProps) => {
+  const pathname = usePathname();
+
+  const hasUpvoted = answer.upvotes.some((id) => id === userId);
+  const hasDownvoted = answer.downvotes.some((id) => id === userId);
+
+  const mutationUpvotes = useMutation({
+    mutationFn: upvotesAnswer,
+  });
+
+  const mutationDownvotes = useMutation({
+    mutationFn: downvotesAnswer,
+  });
+
+  const handleVotes = (type: 'upvotes' | 'downvotes') => {
+    const body = {
+      hasUpvoted,
+      hasDownvoted,
+      path: pathname,
+      answerId: answer._id,
+      userId,
+    };
+
+    if (type === 'upvotes') mutationUpvotes.mutate(body);
+    if (type === 'downvotes') mutationDownvotes.mutate(body);
   };
 
   return (
     <Votes
       type="answer"
-      upvotes={0}
-      hasUpvoted={false}
-      hasDownvoted={false}
+      upvotes={answer.upvotes.length}
+      hasUpvoted={hasUpvoted}
+      hasDownvoted={hasDownvoted}
       upvotesContent="This answer is useful"
       downvotesContent="This answer is not useful"
-      onUpvotes={handleUpvotesAnswer}
-      onDownvotes={handleDownvotesAnswer}
+      onUpvotes={() => handleVotes('upvotes')}
+      onDownvotes={() => handleVotes('downvotes')}
     />
   );
 };

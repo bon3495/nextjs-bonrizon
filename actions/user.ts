@@ -2,10 +2,15 @@
 
 import { revalidatePath } from 'next/cache';
 import { UpdateQuery } from 'mongoose';
+import { z } from 'zod';
 
+import { QUERY_DEFAULT } from '@/constants/values';
+import { AnswersGroupSchema } from '@/containers/answer/schema';
 import { UserFromDbSchema } from '@/containers/authentication/schema';
 import { UserInfoType, UserServerType } from '@/containers/authentication/types';
 import { GetUsersListParamsType } from '@/containers/community/types';
+import { QuestionsResponseSchema } from '@/containers/home/schema';
+import { ParamsListInProfileSchema } from '@/containers/question/schema';
 import { GetUserInfoType, ToggleSaveQuestionType } from '@/containers/question/types';
 import AnswerModel from '@/database/answer.model';
 import QuestionModel from '@/database/question.model';
@@ -161,6 +166,62 @@ export async function getUserInfo({ userId }: GetUserInfoType) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getUserInfo', error);
+    throw error;
+  }
+}
+
+export async function getQuestionsInProfile(params: z.infer<typeof ParamsListInProfileSchema>) {
+  try {
+    connectToDatabase();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { userId, currentPage = QUERY_DEFAULT.CURRENT_PAGE, pageSize = QUERY_DEFAULT.PAGE_SIZE } = params;
+
+    const totalQuestions = await QuestionModel.countDocuments({ author: userId });
+    const userQuestions = await QuestionModel.find({ author: userId })
+      .sort({ views: -1, upvotes: -1 })
+      .populate('tags', '_id name description')
+      .populate('author', '_id clerkId name picture');
+
+    const userQuestionsParsed = QuestionsResponseSchema.parse(userQuestions);
+
+    return {
+      totalQuestions,
+      userQuestions: userQuestionsParsed,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getQuestionsInProfile', error);
+    throw error;
+  }
+}
+
+export async function getAnswersInProfile(params: z.infer<typeof ParamsListInProfileSchema>) {
+  try {
+    connectToDatabase();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { userId, currentPage = QUERY_DEFAULT.CURRENT_PAGE, pageSize = QUERY_DEFAULT.PAGE_SIZE } = params;
+
+    const totalAnswers = await AnswerModel.countDocuments({ author: userId });
+    const userAnswers = await AnswerModel.find({ author: userId, upvotes: { $ne: [] } })
+      .sort({ upvotes: -1 })
+      .populate({
+        path: 'question',
+        model: QuestionModel,
+        select: '_id title',
+      })
+      .populate('author', '_id clerkId name picture');
+
+    const userAnswersParsed = AnswersGroupSchema.parse(userAnswers);
+
+    return {
+      totalAnswers,
+      userAnswers: userAnswersParsed,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getQuestionsInProfile', error);
     throw error;
   }
 }

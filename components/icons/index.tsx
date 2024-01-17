@@ -6,6 +6,7 @@ import ChatIcon from '@/components/icons/ChatIcon';
 import CheckedIcon from '@/components/icons/CheckedIcon';
 import CloseIcon from '@/components/icons/CloseIcon';
 import EditIcon from '@/components/icons/EditIcon';
+import EditIcon2 from '@/components/icons/EditIcon2';
 import EyeIcon from '@/components/icons/EyeIcon';
 import FingerPrintIcon from '@/components/icons/FingerPrintIcon';
 import LikeIcon from '@/components/icons/LikeIcon';
@@ -17,6 +18,7 @@ import PencilIcon from '@/components/icons/PencilIcon';
 import QuestionIcon from '@/components/icons/QuestionIcon';
 import StarIcon from '@/components/icons/StarIcon';
 import StarsIcon from '@/components/icons/StarsIcon';
+import TrashIcon from '@/components/icons/TrashIcon';
 import UnderLineIcon from '@/components/icons/UnderLineIcon';
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
@@ -42,4 +44,6 @@ export const Icons = {
   PencilIcon,
   StarIcon,
   BadgeIcon,
+  TrashIcon,
+  EditIcon2,
 };
