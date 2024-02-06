@@ -13,7 +13,7 @@ interface ComponentProps {
   footer?: React.ReactNode;
   tooltipText?: string;
   isPending?: boolean;
-  onDelete?: () => void;
+  onDelete?: (callback: () => void) => void;
 }
 
 const ProfileRemoveItem = ({ title, children, footer, tooltipText, isPending, onDelete }: ComponentProps) => {
@@ -21,6 +21,10 @@ const ProfileRemoveItem = ({ title, children, footer, tooltipText, isPending, on
 
   const handleToggleDialog = () => {
     setOpen((prev) => !prev);
+  };
+
+  const handleDelete = () => {
+    onDelete?.(() => setOpen(false));
   };
 
   return (
@@ -51,13 +55,19 @@ const ProfileRemoveItem = ({ title, children, footer, tooltipText, isPending, on
             <>
               <Button
                 variant="ghost"
-                className="min-w-[110px] border-0"
+                className="min-w-[110px] border"
                 onClick={handleToggleDialog}
                 disabled={isPending}
               >
                 Cancel
               </Button>
-              <Button variant="destructive" className="min-w-[110px]" onClick={onDelete} disabled={isPending}>
+              <Button
+                variant="destructive"
+                className="min-w-[110px]"
+                onClick={handleDelete}
+                disabled={isPending}
+                isLoading={isPending}
+              >
                 Delete
               </Button>
             </>

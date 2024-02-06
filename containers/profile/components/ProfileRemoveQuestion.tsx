@@ -17,8 +17,13 @@ const ProfileRemoveQuestion = ({ questionId }: ComponentProps) => {
     mutationFn: deleteQuestion,
   });
 
-  const handleDeleteQuestion = () => {
-    mutate({ questionId, path: pathname });
+  const handleDeleteQuestion = (callback: () => void) => {
+    mutate(
+      { questionId, path: pathname },
+      {
+        onSuccess: () => callback(),
+      },
+    );
   };
 
   return (
