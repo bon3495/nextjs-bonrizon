@@ -6,7 +6,7 @@ import EditIcon2 from '@/components/icons/EditIcon2';
 import EyeIcon from '@/components/icons/EyeIcon';
 import LikeIcon from '@/components/icons/LikeIcon';
 import TagLink from '@/components/shared/TagLink';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { MONTH_DATE_YEAR_FULLTIME } from '@/constants/date-time-format';
 import { ROUTES_NAME } from '@/constants/routes';
@@ -51,11 +51,12 @@ const ProfileQuestions = async ({ userId, clerkId }: ComponentProps) => {
                       <TooltipProvider delayDuration={300}>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 rounded-full p-0" asChild>
-                              <Link href={`${ROUTES_NAME.QUESTIONS}/edit/${question._id.toString()}`}>
-                                <EditIcon2 className="h-5 w-5" />
-                              </Link>
-                            </Button>
+                            <Link
+                              className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 w-8 rounded-full p-0')}
+                              href={`${ROUTES_NAME.QUESTIONS}/edit/${question._id.toString()}`}
+                            >
+                              <EditIcon2 className="h-5 w-5" />
+                            </Link>
                           </TooltipTrigger>
                           <TooltipPortal>
                             <TooltipContent side="top" align="center" className="max-w-[300px]">
