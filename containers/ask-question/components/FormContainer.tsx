@@ -3,11 +3,12 @@
 import { useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { useTheme } from 'next-themes';
 import { ControllerRenderProps, useForm } from 'react-hook-form';
 
-import { createQuestion } from '@/actions/question';
+import { createQuestion, editQuestion } from '@/actions/question';
 import CloseIcon from '@/components/icons/CloseIcon';
 import { badgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,34 +25,67 @@ import { Input } from '@/components/ui/input';
 import { ROUTES_NAME } from '@/constants/routes';
 import { FormAskQuestionSchema } from '@/containers/ask-question/schema';
 import { FormAskQuestionType } from '@/containers/ask-question/types';
+import { QuestionParsedSchema } from '@/containers/home/schema';
 import { cn } from '@/lib/utils';
 
 const MAX_LENGTH_TAG_VALUE = 15;
 
 const KEYS = ['Enter', 'Tab'];
 
-interface FormContainerProps {
-  mongoUserId: string;
+interface AddQuestionProps {
+  type: 'ADD_QUESTION';
 }
 
-const FormContainer = ({ mongoUserId }: FormContainerProps) => {
+interface EditQuestionProps {
+  questionStringify: string;
+  type: 'EDIT_QUESTION';
+}
+
+type FormContainerProps = {
+  mongoUserId: string;
+} & (AddQuestionProps | EditQuestionProps);
+
+const FormContainer = (props: FormContainerProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useTheme();
+
+  const { mongoUserId } = props;
+
+  const isEdit = props.type === 'EDIT_QUESTION';
+
+  const questionStringify = isEdit ? props.questionStringify : undefined;
+
+  const questionDetailsParsed = questionStringify
+    ? QuestionParsedSchema.parse(JSON.parse(questionStringify))
+    : undefined;
 
   const editorRef = useRef<Editor | null>(null);
 
   const methods = useForm<FormAskQuestionType>({
     resolver: zodResolver(FormAskQuestionSchema),
     defaultValues: {
-      title: '',
-      details: '',
-      // expecting: '',
-      tags: [],
+      title: questionDetailsParsed?.title || '',
+      details: questionDetailsParsed?.details || '',
+      tags: questionDetailsParsed?.tags.map((tag) => tag.name) || [],
     },
   });
 
   const { control, handleSubmit, setError, setValue, clearErrors } = methods;
+
+  const mutateCreateQuestion = useMutation({
+    mutationFn: createQuestion,
+    onSuccess: (response) => {
+      router.push(`${ROUTES_NAME.QUESTIONS}/${response?.questionId}`);
+    },
+  });
+
+  const mutateEditQuestion = useMutation({
+    mutationFn: editQuestion,
+    onSuccess: (response) => {
+      router.push(`${ROUTES_NAME.QUESTIONS}/${response?.questionId}`);
+    },
+  });
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -61,6 +95,7 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
     const tagValue = tagInput.value.trim();
 
     if (!tagValue) return;
+
     if (KEYS.includes(e.key)) {
       e.preventDefault();
 
@@ -90,15 +125,20 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
   };
 
   const onSubmit = async (data: FormAskQuestionType) => {
-    try {
-      await createQuestion({
-        ...data,
-        author: mongoUserId,
+    if (isEdit && questionDetailsParsed?._id) {
+      return mutateEditQuestion.mutate({
+        title: data.title,
+        details: data.details,
+        questionId: questionDetailsParsed?._id,
         path: pathname,
       });
+    }
 
-      router.push(ROUTES_NAME.HOME);
-    } catch (error) {}
+    mutateCreateQuestion.mutate({
+      ...data,
+      author: mongoUserId,
+      path: pathname,
+    });
   };
 
   return (
@@ -147,9 +187,9 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                       editorRef.current = editor;
                     }}
                     onBlur={field.onBlur}
-                    // initialValue=""
+                    initialValue={questionDetailsParsed?.details || ''}
                     init={{
-                      height: 350,
+                      height: 500,
                       menubar: false,
                       plugins: [
                         'advlist',
@@ -200,6 +240,7 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                     errorMessage={error?.message}
                     placeholder="e.g. (laravel asp.net-mvc angularjs)"
+                    disabled={isEdit}
                   />
                 </FormControl>
                 <FormMessage className="mt-1" />
@@ -209,13 +250,15 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
                     ? field.value.map((val) => (
                         <li key={val} className={cn(badgeVariants({ variant: 'tag-secondary' }), 'gap-x-1')}>
                           <span>{val}</span>
-                          <Button
-                            className="h-auto w-auto rounded-full p-0.5 hover:bg-secondary hover:text-white focus-visible:ring-secondary focus-visible:ring-offset-0 dark:hover:bg-secondary dark:focus-visible:ring-secondary"
-                            variant="ghost"
-                            onClick={() => handleChangeTags(val, field)}
-                          >
-                            <CloseIcon className="h-4 w-4" />
-                          </Button>
+                          {!isEdit && (
+                            <Button
+                              className="h-auto w-auto rounded-full p-0.5 hover:bg-secondary hover:text-white focus-visible:ring-secondary focus-visible:ring-offset-0 dark:hover:bg-secondary dark:focus-visible:ring-secondary"
+                              variant="ghost"
+                              onClick={() => handleChangeTags(val, field)}
+                            >
+                              <CloseIcon className="h-4 w-4" />
+                            </Button>
+                          )}
                         </li>
                       ))
                     : null}
@@ -226,7 +269,13 @@ const FormContainer = ({ mongoUserId }: FormContainerProps) => {
         </section>
 
         <div className="flex items-center">
-          <Button type="submit" variant="primary" className="ml-auto">
+          <Button
+            type="submit"
+            variant="primary"
+            className="ml-auto"
+            disabled={mutateCreateQuestion.isPending || mutateEditQuestion.isPending}
+            isLoading={mutateCreateQuestion.isPending || mutateEditQuestion.isPending}
+          >
             Post Your Question
           </Button>
         </div>

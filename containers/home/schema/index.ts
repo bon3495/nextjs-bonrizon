@@ -40,6 +40,46 @@ export const QuestionItemSchema = z.object({
   createAt: z.date().transform((date) => date.toISOString()),
 });
 
+export const QuestionParsedSchema = z.object({
+  _id: z.string(),
+  title: z.string().trim(),
+  details: z.string().trim(),
+  tags: z.array(
+    z.object({
+      _id: z.string(),
+      name: z.string().trim(),
+      description: z.string().trim().catch(''),
+    }),
+  ),
+  views: z.number(),
+  upvotes: z
+    .array(
+      z.object({
+        _id: z.string(),
+        clerkId: z.string().trim(),
+        name: z.string().trim(),
+        picture: z.string().trim(),
+      }),
+    )
+    .default([]),
+  downvotes: z
+    .array(
+      z.object({
+        _id: z.string(),
+        clerkId: z.string().trim(),
+        name: z.string().trim(),
+        picture: z.string().trim(),
+      }),
+    )
+    .default([]),
+  author: z.object({
+    _id: z.string(),
+    clerkId: z.string().trim(),
+    name: z.string().trim(),
+    picture: z.string().trim(),
+  }),
+});
+
 export const QuestionsResponseSchema = z.array(QuestionItemSchema);
 
 export const QuestionDetailsSchema = QuestionItemSchema.extend({
@@ -80,4 +120,11 @@ export const QuestionVoteParamsSchema = z.object({
 export const DeleteQuestionParamsSchema = z.object({
   path: z.string(),
   questionId: z.string(),
+});
+
+export const EditQuestionParamsSchema = z.object({
+  questionId: z.string(),
+  title: z.string().trim().catch(''),
+  details: z.string().trim().catch(''),
+  path: z.string().trim(),
 });

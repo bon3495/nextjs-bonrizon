@@ -4,7 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { UpdateQuery } from 'mongoose';
 import { z } from 'zod';
 
-import { DeleteQuestionParamsSchema, QuestionDetailsSchema, QuestionsResponseSchema } from '@/containers/home/schema';
+import {
+  DeleteQuestionParamsSchema,
+  EditQuestionParamsSchema,
+  QuestionDetailsSchema,
+  QuestionsResponseSchema,
+} from '@/containers/home/schema';
 import {
   CreateQuestionType,
   GetQuestionsParamsType,
@@ -90,11 +95,27 @@ export async function createQuestion(params: CreateQuestionType) {
         tags: { $each: tagsDocument },
       },
     });
-
-    // Create an interaction record for the user's ask question action
-
-    // Increment author's reputation by +5 for creating a question
     revalidatePath(path);
+
+    return { questionId: question._id.toString() as string };
+  } catch (error) {}
+}
+
+export async function editQuestion(params: z.infer<typeof EditQuestionParamsSchema>) {
+  try {
+    connectToDatabase();
+    const { title, details, questionId, path } = params;
+
+    const existingQuestion = await QuestionModel.findById(questionId);
+    if (!existingQuestion) throw new Error('Question not found!');
+
+    existingQuestion.title = title;
+    existingQuestion.details = details;
+
+    await existingQuestion.save();
+    revalidatePath(path);
+
+    return { questionId: existingQuestion._id.toString() as string };
   } catch (error) {}
 }
 

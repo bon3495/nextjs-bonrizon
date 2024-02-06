@@ -3,7 +3,7 @@ import { auth, SignedIn } from '@clerk/nextjs';
 
 import { getAnswersInProfile } from '@/actions/user';
 import EditIcon2 from '@/components/icons/EditIcon2';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ROUTES_NAME } from '@/constants/routes';
 import { QUERY_DEFAULT } from '@/constants/values';
@@ -40,11 +40,12 @@ const ProfileAnswers = async ({ clerkId, userId }: ComponentProps) => {
                     <TooltipProvider delayDuration={300}>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 rounded-full p-0" asChild>
-                            <Link href={`${ROUTES_NAME.QUESTIONS}/${answer.question._id}#${answer._id}`}>
-                              <EditIcon2 className="h-5 w-5" />
-                            </Link>
-                          </Button>
+                          <Link
+                            className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 w-8 rounded-full p-0')}
+                            href={`${ROUTES_NAME.QUESTIONS}/${answer.question._id}#${answer._id}`}
+                          >
+                            <EditIcon2 className="h-5 w-5" />
+                          </Link>
                         </TooltipTrigger>
                         <TooltipPortal>
                           <TooltipContent side="top" align="center" className="max-w-[300px]">

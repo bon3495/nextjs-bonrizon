@@ -23,7 +23,7 @@ const AskQuestionPage = async () => {
     <div className="flex flex-col">
       <h1 className="mb-8 text-3xl font-bold">Ask a public question</h1>
       <InstructionsNotice />
-      <FormContainer mongoUserId={`${user._id}`} />
+      <FormContainer mongoUserId={`${user._id}`} type="ADD_QUESTION" />
     </div>
   );
 };
