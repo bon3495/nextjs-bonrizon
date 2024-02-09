@@ -10,7 +10,7 @@ import { UserFromDbSchema } from '@/containers/authentication/schema';
 import { UserInfoType, UserServerType } from '@/containers/authentication/types';
 import { GetUsersListParamsType } from '@/containers/community/types';
 import { QuestionsResponseSchema } from '@/containers/home/schema';
-import { ParamsListInProfileSchema } from '@/containers/question/schema';
+import { EditProfileUserParamsSchema, ParamsListInProfileSchema } from '@/containers/question/schema';
 import { GetUserInfoType, ToggleSaveQuestionType } from '@/containers/question/types';
 import AnswerModel from '@/database/answer.model';
 import QuestionModel from '@/database/question.model';
@@ -222,6 +222,23 @@ export async function getAnswersInProfile(params: z.infer<typeof ParamsListInPro
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getQuestionsInProfile', error);
+    throw error;
+  }
+}
+
+export async function editProfileUser(params: z.infer<typeof EditProfileUserParamsSchema>) {
+  try {
+    connectToDatabase();
+    const { clerkId, updateData, path } = params;
+
+    await UserModel.findOneAndUpdate({ clerkId }, updateData, {
+      new: true,
+    });
+
+    revalidatePath(path);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - editProfileUser', error);
     throw error;
   }
 }

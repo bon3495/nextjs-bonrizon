@@ -6,13 +6,10 @@ interface ComponentProps {
   user: UserDataType;
 }
 
-const ProfileAbout = ({ className }: ComponentProps) => {
+const ProfileAbout = ({ className, user }: ComponentProps) => {
   return (
     <ProfileBlockWrap className={className} title="About">
-      <p>
-        I'm a Necromancer. Necromancers are not very good people. Very good people are those who listen on one or more
-        keywords (tags) and respond if know. But necromancers don't listen (watch).
-      </p>
+      <p>{user.bio}</p>
     </ProfileBlockWrap>
   );
 };
