@@ -10,6 +10,7 @@ import EditIcon2 from '@/components/icons/EditIcon2';
 import EyeIcon from '@/components/icons/EyeIcon';
 import FingerPrintIcon from '@/components/icons/FingerPrintIcon';
 import LikeIcon from '@/components/icons/LikeIcon';
+import LinkIcon from '@/components/icons/LinkIcon';
 import Logo from '@/components/icons/Logo';
 import MailIcon from '@/components/icons/MailIcon';
 import MapPinIcon from '@/components/icons/MapPinIcon';
@@ -46,4 +47,5 @@ export const Icons = {
   BadgeIcon,
   TrashIcon,
   EditIcon2,
+  LinkIcon,
 };

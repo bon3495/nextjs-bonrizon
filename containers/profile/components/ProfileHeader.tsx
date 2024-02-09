@@ -4,6 +4,7 @@ import { auth, SignedIn } from '@clerk/nextjs';
 
 import CalendarIcon from '@/components/icons/CalendarIcon';
 import EditIcon from '@/components/icons/EditIcon';
+import LinkIcon from '@/components/icons/LinkIcon';
 import MapPinIcon from '@/components/icons/MapPinIcon';
 import { buttonVariants } from '@/components/ui/button';
 import { MONTH_DATE_YEAR } from '@/constants/date-time-format';
@@ -43,11 +44,21 @@ const ProfileHeader = ({ user }: ComponentProps) => {
 
         <div className="ml-[160px] flex h-full items-center justify-between py-4 pr-[25px]">
           <div className="flex flex-col">
-            <p className="text-2xl font-semibold">{user.name}</p>
+            <p className="text-2xl font-semibold">
+              {user.name} ({user.username})
+            </p>
             <div className="mt-1 flex items-center space-x-4">
-              <p className="flex items-center space-x-1">
-                <span>@{user.username}</span>
-              </p>
+              {user.portfolioWebsite && (
+                <a
+                  href={user.portfolioWebsite}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center space-x-1 transition-all hover:text-secondary"
+                >
+                  <LinkIcon />
+                  <span className="group-hover:underline">Portfolio</span>
+                </a>
+              )}
               {user.location && (
                 <p className="flex items-center space-x-1">
                   <MapPinIcon />

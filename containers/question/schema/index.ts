@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { MINIMUM_TEXT_EDITOR } from '@/constants/values';
+import { FormProfileSchema } from '@/containers/profile/schema';
 
 export const FormAnswerSchema = z.object({
   answerDetail: z
@@ -25,4 +26,10 @@ export const ParamsListInProfileSchema = z.object({
   userId: z.string(),
   currentPage: z.number(),
   pageSize: z.number(),
+});
+
+export const EditProfileUserParamsSchema = z.object({
+  clerkId: z.string(),
+  updateData: FormProfileSchema,
+  path: z.string(),
 });
