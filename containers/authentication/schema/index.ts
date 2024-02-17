@@ -25,8 +25,8 @@ export const UserInfoSchema = z.object({
     z.array(z.string()),
   ]),
   joined: z.string().trim(),
-  gender: z.string().trim(),
-  birthday: z.string().trim(),
+  gender: z.string().trim().optional(),
+  birthday: z.string().trim().optional(),
 });
 
 export const UserFromDbSchema = z.object({
@@ -45,6 +45,6 @@ export const UserFromDbSchema = z.object({
   questions: z.number(),
   saved: z.array(z.custom<Types.ObjectId>()).transform((data) => data.map((id) => id.toString())),
   joined: z.date().transform((data) => data.toISOString()),
-  gender: z.string().trim(),
-  birthday: z.string().trim(),
+  gender: z.string().trim().optional(),
+  birthday: z.string().trim().optional(),
 });
