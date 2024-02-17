@@ -9,6 +9,8 @@ import {
   EditQuestionParamsSchema,
   QuestionDetailsSchema,
   QuestionsResponseSchema,
+  TopQuestionsParamsSchema,
+  TopQuestionsSchema,
 } from '@/containers/home/schema';
 import {
   CreateQuestionType,
@@ -248,6 +250,22 @@ export async function deleteQuestion(params: z.infer<typeof DeleteQuestionParams
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - deleteQuestion', error);
+    throw error;
+  }
+}
+
+export async function getTopQuestions(params: Partial<z.infer<typeof TopQuestionsParamsSchema>>) {
+  try {
+    connectToDatabase();
+    const { total = 10 } = params;
+    const response = await QuestionModel.find({}).sort({ views: -1, upvotes: -1 }).limit(total);
+
+    const topQuestionsParsed = TopQuestionsSchema.parse(response);
+
+    return topQuestionsParsed;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getTopQuestions', error);
     throw error;
   }
 }

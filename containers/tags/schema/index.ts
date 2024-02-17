@@ -42,3 +42,16 @@ export const GetTagFromDbSchema = z.object({
   name: z.string().trim(),
   questions: QuestionsResponseSchema,
 });
+
+export const TopPopularTagsParamsSchema = z.object({
+  total: z.number(),
+});
+
+export const TopPopularTagSchema = z.object({
+  name: z.string(),
+  numberOfQuestions: z.number(),
+  _id: z.string(),
+  description: z.string(),
+});
+
+export const TopPopularTagsListSchema = z.array(TopPopularTagSchema);

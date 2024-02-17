@@ -128,3 +128,14 @@ export const EditQuestionParamsSchema = z.object({
   details: z.string().trim().catch(''),
   path: z.string().trim(),
 });
+
+export const TopQuestionsParamsSchema = z.object({
+  total: z.number(),
+});
+
+export const TopQuestionItemSchema = z.object({
+  _id: z.union([z.custom<Types.ObjectId>().transform((id) => id.toString()), z.string()]),
+  title: z.string().trim(),
+});
+
+export const TopQuestionsSchema = z.array(TopQuestionItemSchema);
