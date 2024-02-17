@@ -1,8 +1,9 @@
 'use server';
 
 import { FilterQuery } from 'mongoose';
+import { z } from 'zod';
 
-import { GetTagFromDbSchema } from '@/containers/tags/schema';
+import { GetTagFromDbSchema, TopPopularTagsListSchema, TopPopularTagsParamsSchema } from '@/containers/tags/schema';
 import {
   GetQuestionsByTagIdParamsType,
   TagItemType,
@@ -115,6 +116,27 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParamsType)
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('actions - getQuestionsByTagId', error);
+    throw error;
+  }
+}
+
+export async function getTopPopularTags(params: z.infer<typeof TopPopularTagsParamsSchema>) {
+  try {
+    connectToDatabase();
+    const { total } = params;
+    const popularTags = await TagModel.aggregate([
+      { $match: { questions: { $exists: true, $not: { $size: 0 } } } },
+      { $project: { name: 1, description: 1, numberOfQuestions: { $size: '$questions' } } },
+      { $match: { numberOfQuestions: { $gte: 1 } } },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: total },
+    ]);
+
+    const tagsParsed = TopPopularTagsListSchema.parse(popularTags);
+    return tagsParsed;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('actions - getTopPopularTags', error);
     throw error;
   }
 }
