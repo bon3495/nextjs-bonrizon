@@ -50,7 +50,7 @@ export const TopPopularTagsParamsSchema = z.object({
 export const TopPopularTagSchema = z.object({
   name: z.string(),
   numberOfQuestions: z.number(),
-  _id: z.string(),
+  _id: z.union([z.custom<Types.ObjectId>().transform((id) => id.toString()), z.string()]),
   description: z.string(),
 });
 

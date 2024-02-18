@@ -80,7 +80,7 @@ export async function createQuestion(params: CreateQuestionType) {
           },
         },
         {
-          $setOnInsert: { name: tag },
+          $setOnInsert: { name: tag, description: '' },
           $push: { questions: question._id },
         },
         {
@@ -89,7 +89,7 @@ export async function createQuestion(params: CreateQuestionType) {
         },
       );
 
-      tagsDocument.push(existingTag._id);
+      tagsDocument.push(existingTag ? existingTag._id : question._id);
     }
 
     await QuestionModel.findByIdAndUpdate(question._id, {
